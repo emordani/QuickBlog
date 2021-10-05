@@ -36,7 +36,7 @@ namespace QuickBlog.Configuration
             serviceCollection.AddScoped<IAdminBusinessManager, AdminBusinessManager>();
             serviceCollection.AddScoped<IHomeBusinessManager, HomeBusinessManager>();
 
-            serviceCollection.AddScoped<IPostService, PostService>();
+            serviceCollection.AddScoped<IPostService, CORE.PostService>();
             serviceCollection.AddScoped<IUserService, UserService>();
         }
 
