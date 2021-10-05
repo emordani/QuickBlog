@@ -1,22 +1,15 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
-using QuickBlog.Models;
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Threading.Tasks;
-using QuickBlog.BusinessManagers.Interfaces;
-using QuickBlog.Models.HomeViewModels;
+using QuickBlog.CORE.Services.Interfaces;
+using QuickBlog.CORE.ViewModels.HomeViewModels;
 
 namespace QuickBlog.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly IPostBusinessManager _postBusinessManager;
-        private readonly IHomeBusinessManager _homeBusinessManager;
+        private readonly CORE.Services.Interfaces.IPostService _postBusinessManager;
+        private readonly IHomeService _homeBusinessManager;
 
-        public HomeController(IPostBusinessManager postBusinessManager, IHomeBusinessManager homeBusinessManager)
+        public HomeController(CORE.Services.Interfaces.IPostService postBusinessManager, IHomeService homeBusinessManager)
         {
             _postBusinessManager = postBusinessManager;
             _homeBusinessManager = homeBusinessManager;

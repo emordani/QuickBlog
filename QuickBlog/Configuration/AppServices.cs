@@ -1,17 +1,16 @@
 ﻿using System.IO;
-using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
-using QuickBlog.Authorization;
-using QuickBlog.BusinessManagers;
-using QuickBlog.BusinessManagers.Interfaces;
-using QuickBlog.CORE;
-using QuickBlog.CORE.Interfaces;
+using QuickBlog.CORE.Authorization;
+using QuickBlog.CORE.Services;
+using QuickBlog.CORE.Services.Interfaces;
 using QuickBlog.DAL;
 using QuickBlog.DAL.Models;
+using QuickBlog.DAL.Repositories;
+using QuickBlog.DAL.Repositories.Interfaces;
 
 namespace QuickBlog.Configuration
 {
@@ -32,12 +31,12 @@ namespace QuickBlog.Configuration
 
         public static void AddCustomServices(this IServiceCollection serviceCollection)
         {
-            serviceCollection.AddScoped<IPostBusinessManager, PostBusinessManager>();
-            serviceCollection.AddScoped<IAdminBusinessManager, AdminBusinessManager>();
-            serviceCollection.AddScoped<IHomeBusinessManager, HomeBusinessManager>();
+            serviceCollection.AddScoped<IPostService, PostService>();
+            serviceCollection.AddScoped<IAdminService, AdminService>();
+            serviceCollection.AddScoped<IHomeService, HomeService>();
 
-            serviceCollection.AddScoped<IPostService, CORE.PostService>();
-            serviceCollection.AddScoped<IUserService, UserService>();
+            serviceCollection.AddScoped<IPostRepository, PostRepository>();
+            serviceCollection.AddScoped<IUserRepository, UserRepository>();
         }
 
         public static void AddCustomAuthorization(this IServiceCollection serviceCollection)

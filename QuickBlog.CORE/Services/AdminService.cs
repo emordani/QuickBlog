@@ -2,7 +2,6 @@
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
-using QuickBlog.CORE.Interfaces;
 using QuickBlog.CORE.Services.Interfaces;
 using QuickBlog.CORE.ViewModels.AdminViewModels;
 using QuickBlog.DAL.Models;

@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using PagedList.Core;
-using QuickBlog.CORE.Interfaces;
 using QuickBlog.CORE.Services.Interfaces;
 using QuickBlog.CORE.ViewModels.HomeViewModels;
 using QuickBlog.DAL.Models;
@@ -14,10 +13,10 @@ namespace QuickBlog.CORE.Services
 {
     public class HomeService : IHomeService
     {
-        private readonly IUserService _userRepository;
+        private readonly IUserRepository _userRepository;
         private readonly IPostRepository _postRepository;
 
-        public HomeService(IUserService userRepository, IPostRepository postRepository)
+        public HomeService(IUserRepository userRepository, IPostRepository postRepository)
         {
             _userRepository = userRepository;
             _postRepository = postRepository;

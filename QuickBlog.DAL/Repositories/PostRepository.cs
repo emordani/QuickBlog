@@ -43,7 +43,6 @@ namespace QuickBlog.DAL.Repositories
         {
             return _applicationDbContext.Posts
                 .Include(post => post.Creator)
-                .Include(post => post.Approver)
                 .Include(post => post.Comments)
                 .Where(post => post.Creator == applicationUser);
         }

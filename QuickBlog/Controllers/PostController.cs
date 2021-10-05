@@ -1,25 +1,28 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Routing;
-using QuickBlog.BusinessManagers.Interfaces;
+using Microsoft.AspNetCore.Hosting;
+using QuickBlog.CORE.Services.Interfaces;
 using QuickBlog.DAL.Models;
-using QuickBlog.Models.PostViewModels;
+//using QuickBlog.Models.PostViewModels;
+using QuickBlog.CORE.ViewModels.PostViewModels;
 
 namespace QuickBlog.Controllers
 {
     [Authorize]
     public class PostController : Controller
     {
-        private readonly IPostBusinessManager _postBusinessManager;
-        public PostController(IPostBusinessManager postBusinessManager)
+        private readonly IPostService _postBusinessManager;
+        private readonly IWebHostEnvironment _webHostEnvironment;
+        public PostController(IPostService postBusinessManager, IWebHostEnvironment webHostEnvironment)
         {
             _postBusinessManager = postBusinessManager;
+            _webHostEnvironment = webHostEnvironment;
         }
         [ AllowAnonymous]
         public async Task<IActionResult> Index(int? id)
         {
-            ActionResult<PostViewModel> actionResult = await _postBusinessManager.GetPostViewModel(id, User);
+            var actionResult = await _postBusinessManager.GetPostViewModel(id, User);
             if (actionResult.Result is null)
                 return View(actionResult.Value);
             return actionResult.Result;
@@ -31,21 +34,23 @@ namespace QuickBlog.Controllers
         }
         public async Task<IActionResult> Edit(int? id)
         {
-            ActionResult<EditViewModel> actionResult = await _postBusinessManager.GetEditViewModel(id, User);
+            var actionResult = await _postBusinessManager.GetEditViewModel(id, User);
             if (actionResult.Result is null)
                 return View(actionResult.Value);
             return actionResult.Result;
         }
         [HttpPost,Route("Post/Add")]
-        public async Task<IActionResult> Add(CreateViewModel createPostViewModel)
+        public async Task<IActionResult> Add(CORE.ViewModels.PostViewModels.CreateViewModel createPostViewModel)
         {
-            await _postBusinessManager.CreatePost(createPostViewModel, User);
+            string webRootPath = _webHostEnvironment.WebRootPath;
+            await _postBusinessManager.CreatePost(createPostViewModel, User, webRootPath);
             return RedirectToAction("Create");
         }
         [HttpPost, Route("Post/Update")]
         public async Task<IActionResult> Update(EditViewModel editViewModel)
         {
-            ActionResult<EditViewModel> actionResult=await _postBusinessManager.UpdatePost(editViewModel, User);
+            string webRootPath = _webHostEnvironment.WebRootPath;
+            ActionResult<EditViewModel> actionResult=await _postBusinessManager.UpdatePost(editViewModel, User,webRootPath);
             if (actionResult.Result is null)
                 return RedirectToAction("Edit", new {id=editViewModel.Post.PostId});
 

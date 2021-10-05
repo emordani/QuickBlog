@@ -1,19 +1,22 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
-using QuickBlog.BusinessManagers.Interfaces;
-using QuickBlog.Models.AdminViewModels;
+using Microsoft.AspNetCore.Hosting;
+using QuickBlog.CORE.Services.Interfaces;
+using QuickBlog.CORE.ViewModels.AdminViewModels;
 
 namespace QuickBlog.Controllers
 {
     [Authorize]
     public class AdminController : Controller
     {
-        private readonly IAdminBusinessManager _adminBusinessManager;
+        private readonly IAdminService _adminBusinessManager;
+        private readonly IWebHostEnvironment _webHostEnvironment;
 
-        public AdminController(IAdminBusinessManager adminBusinessManager)
+        public AdminController(IAdminService adminBusinessManager, IWebHostEnvironment webHostEnvironment)
         {
             _adminBusinessManager = adminBusinessManager;
+            _webHostEnvironment = webHostEnvironment;
         }
         public async Task<IActionResult> Index()
         {
@@ -26,7 +29,8 @@ namespace QuickBlog.Controllers
         [HttpPost]
         public async Task<IActionResult> UpdateAbout(AboutViewModel aboutViewModel)
         {
-            await _adminBusinessManager.UpdateAbout(aboutViewModel, User);
+            string webRootPath = _webHostEnvironment.WebRootPath;
+            await _adminBusinessManager.UpdateAbout(aboutViewModel, User, webRootPath);
             return RedirectToAction("About");
         }
     }
