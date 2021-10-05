@@ -1,0 +1,31 @@
+﻿@model QuickBlog.Models.HomeViewModels.IndexViewModel
+@using PagedList.Core.Mvc
+
+<div class="container">
+    <form asp-controller="Home" asp-action="Index" class="d-none d-md-inline-block form-inline ml-auto mr-0 mr-md-3 my-2 my-md-0">
+        <div class="input-group mb-3">
+            <input asp-for="SearchString" type="text" class="form-control" placeholder="Search posts for..."/>
+            <div class="input-group-append">
+                <button class="btn btn-outline-secondary">Search</button>
+            </div>
+        </div>
+    </form>
+    <div class="row align-content-center">
+        @foreach (var post in Model.Posts)
+        {
+            <div class="col-lg-4 col-md-3 mb-4">
+                <div class="card border-0 shadow">
+                    <img src="~/UserFiles/Posts/@post.PostId/HeaderImage.jpg" class="card-img-top"/>
+                    <div class="card-body">
+                        <div class="row text-center">
+                            <h5 class="card-title text-center w-100"><a asp-controller="Post" asp-action="Index" asp-route-id="@post.PostId">@post.Title</a></h5>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+    <div list="@Model.Posts" count="20">
+        <pager class="pager-container" list="@Model.Posts" options="@PagedListRenderOptions.Bootstrap4PageNumbersPlusPrevAndNext" asp-controller="Home" asp-action="Index" asp-route-query="@Model.SearchString"></pager>
+    </div>
+</div>
