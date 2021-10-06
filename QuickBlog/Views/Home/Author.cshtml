@@ -39,7 +39,7 @@
                         </div>
                     }
                 </div>
-                <div list="@Model.Posts" count="20">
+                <div list="@Model.Posts" count="@Model.PostCount">
                     <pager class="pager-container" list="@Model.Posts" options="@PagedListRenderOptions.Bootstrap4PageNumbersPlusPrevAndNext" asp-controller="Home" asp-action="Index" asp-route-query="@Model.SearchString"></pager>
                 </div>
             </div>

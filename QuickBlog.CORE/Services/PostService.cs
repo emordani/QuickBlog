@@ -32,15 +32,17 @@ namespace QuickBlog.CORE.Services
 
         public IndexViewModel GetIndexViewModel(string searchString, int? page)
         {
-            int pageSize = 20;
+            int pageSize = 18;
             int pageNumber = page ?? 1;
             IEnumerable<Post> posts = _postService.GetPosts(searchString ?? string.Empty)
                 .Where(post=>post.Published);
+            int postCount = posts.Count();
             return new IndexViewModel
             {
                 Posts = new StaticPagedList<Post>(posts.Skip((pageNumber-1)*pageSize).Take(pageSize),pageNumber,pageSize,posts.Count()),
                 SearchString = searchString,
-                PageNumber = pageNumber
+                PageNumber = pageNumber,
+                PostCount= postCount
             };
         }
 

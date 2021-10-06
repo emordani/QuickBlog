@@ -29,16 +29,18 @@ namespace QuickBlog.CORE.Services
             ApplicationUser applicationUser = _userRepository.GetUserById(authorId);
             if(applicationUser is null)
                 return new NotFoundResult();
-            int pageSize = 20;
+            int pageSize = 18;
             int pageNumber = page ?? 1;
             IEnumerable<Post> posts = _postRepository.GetPosts(searchString ?? String.Empty)
                 .Where(post=>post.Published && post.Creator==applicationUser);
+            int postCount = posts.Count();
             return new AuthorViewModel
             {
                 Author = applicationUser,
                 Posts = new StaticPagedList<Post>(posts.Skip((pageNumber - 1) * pageSize).Take(pageSize), pageNumber, pageSize, posts.Count()),
                 PageNumber = pageNumber,
-                SearchString = searchString
+                SearchString = searchString,
+                PostCount=postCount
             };
         }
     }

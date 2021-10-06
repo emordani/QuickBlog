@@ -1,48 +1,49 @@
-﻿@using QuickBlog.DAL.Models
+﻿@using PagedList.Core.Mvc
 @model QuickBlog.CORE.ViewModels.AdminViewModels.IndexViewModel
 <div class="container-fluid">
     <h1>Dashboard</h1>
-    <ol class="breadcrumb mb-4">
-        <li class="breadcrumb-item active">Dashboard</li>
-    </ol>
     <div class="row">
-        @foreach(var post in Model.Posts) { 
-        <div class="col-xl-3 col-md-6 mb-4">
-            <div class="card border-0 shadow">
-                <img src="~/UserFiles/Posts/@post.PostId/HeaderImage.jpg"/>
-                <div class="card-body">
-                    <div class="row">
-                        <div><h5 class="card-title mb-0">@post.Title</h5></div>
-                        <div class="ml-auto mr-3">
-                            <i class="fas @(post.Published ? "fa-eye" : "fa-eye-slash")" style="color:@(post.Published ? "deepskyblue" : "orangered")"></i>
+        @foreach (var post in Model.Posts)
+        {
+            <div class="col-xl-3 col-md-6 mb-4">
+                <div class="card border-0 shadow">
+                    <img src="~/UserFiles/Posts/@post.PostId/HeaderImage.jpg" />
+                    <div class="card-body">
+                        <div class="row">
+                            <div><h5 class="card-title mb-0">@post.Title</h5></div>
+                            <div class="ml-auto mr-3">
+                                <i class="fas @(post.Published ? "fa-eye" : "fa-eye-slash")" style="color:@(post.Published ? "deepskyblue" : "orangered")"></i>
+                            </div>
+                        </div>
+                        <div class="row ml-0 ">
+                            <div><i class="fas fa-calendar-alt"></i></div>
+                            <p class="text-muted ml-3 mb-0"> Last updated on @post.UpdatedOn.ToString()</p>
+                        </div>
+                        <div class="row ml-0 ">
+                            <div><i class="fas fa-comment"></i></div>
+                            <p class="text-muted ml-3 mb-0">@post.Comments.Count() comments</p>
                         </div>
                     </div>
-                    <div class="row ml-0 ">
-                        <div><i class="fas fa-calendar-alt"></i></div>
-                        <p class="text-muted ml-3 mb-0"> Last updated on @post.UpdatedOn.ToString()</p>
-                    </div>
-                    <div class="row ml-0 ">
-                        <div><i class="fas fa-comment"></i></div>
-                        <p class="text-muted ml-3 mb-0">@post.Comments.Count() comments</p>
-                    </div>
-                </div>
-                <div class="card-footer">
-                    <div class="row">
-                        <div class="col">
-                            <a asp-controller="Post" asp-action="Index" asp-route-id="@post.PostId" class="btn btn-primary">
-                                <i class="fa fa-arrow-circle-right"></i> View
-                            </a>
-                        </div>
-                        <div class="col">
-                            <a asp-controller="Post" asp-action="Edit" asp-route-id="@post.PostId" class="btn btn-secondary float-right">
-                                <i class="fa fa-edit"></i> Edit
-                            </a>
+                    <div class="card-footer">
+                        <div class="row">
+                            <div class="col">
+                                <a asp-controller="Post" asp-action="Index" asp-route-id="@post.PostId" class="btn btn-primary">
+                                    <i class="fa fa-arrow-circle-right"></i> View
+                                </a>
+                            </div>
+                            <div class="col">
+                                <a asp-controller="Post" asp-action="Edit" asp-route-id="@post.PostId" class="btn btn-secondary float-right">
+                                    <i class="fa fa-edit"></i> Edit
+                                </a>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
 
         }
+    </div>
+    <div list="@Model.Posts" count="@Model.PostCount">
+        <pager class="pager-container" list="@Model.Posts" options="@PagedListRenderOptions.Bootstrap4PageNumbersPlusPrevAndNext" asp-controller="Admin" asp-action="Index" asp-route-query="@Model.SearchString"></pager>
     </div>
 </div>

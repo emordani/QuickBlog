@@ -17,7 +17,7 @@
                         <div class="form-group">
                             <label asp-for="PostHeaderImage"></label>
                             <div class="custom-file">
-                                <input asp-for="PostHeaderImage" class="custom-file-input" accept="image/*" />
+                                <input asp-for="PostHeaderImage" class="custom-file-input" accept="image/*"/>
                                 <label class="custom-file-label">Choose file</label>
                             </div>
                             <span asp-validation-for="PostHeaderImage" class="text-danger"></span>
@@ -56,10 +56,10 @@
             .catch(error => {
                 console.error(error);
             });
-        $(".custom-control-input").on("change",
-            function () {
-                var fileName = $(this).val.split("\\").pop();
-                $(this).siblings(".custom-control-input").addClass("selected").html(fileName);
-            });
+
+        $(".custom-file-input").on("change", function () {
+            var fileName = $(this).val().split("\\").pop();
+            $(this).siblings(".custom-file-label").addClass("selected").html(fileName);
+        });
     </script>
 }

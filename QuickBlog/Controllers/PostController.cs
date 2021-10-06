@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using QuickBlog.CORE.Services.Interfaces;
 using QuickBlog.DAL.Models;
-//using QuickBlog.Models.PostViewModels;
 using QuickBlog.CORE.ViewModels.PostViewModels;
 
 namespace QuickBlog.Controllers
@@ -12,17 +11,17 @@ namespace QuickBlog.Controllers
     [Authorize]
     public class PostController : Controller
     {
-        private readonly IPostService _postBusinessManager;
+        private readonly IPostService _postService;
         private readonly IWebHostEnvironment _webHostEnvironment;
-        public PostController(IPostService postBusinessManager, IWebHostEnvironment webHostEnvironment)
+        public PostController(IPostService postService, IWebHostEnvironment webHostEnvironment)
         {
-            _postBusinessManager = postBusinessManager;
+            _postService = postService;
             _webHostEnvironment = webHostEnvironment;
         }
         [ AllowAnonymous]
         public async Task<IActionResult> Index(int? id)
         {
-            var actionResult = await _postBusinessManager.GetPostViewModel(id, User);
+            var actionResult = await _postService.GetPostViewModel(id, User);
             if (actionResult.Result is null)
                 return View(actionResult.Value);
             return actionResult.Result;
@@ -34,23 +33,23 @@ namespace QuickBlog.Controllers
         }
         public async Task<IActionResult> Edit(int? id)
         {
-            var actionResult = await _postBusinessManager.GetEditViewModel(id, User);
+            var actionResult = await _postService.GetEditViewModel(id, User);
             if (actionResult.Result is null)
                 return View(actionResult.Value);
             return actionResult.Result;
         }
         [HttpPost,Route("Post/Add")]
-        public async Task<IActionResult> Add(CORE.ViewModels.PostViewModels.CreateViewModel createPostViewModel)
+        public async Task<IActionResult> Add(CreateViewModel createPostViewModel)
         {
             string webRootPath = _webHostEnvironment.WebRootPath;
-            await _postBusinessManager.CreatePost(createPostViewModel, User, webRootPath);
+            await _postService.CreatePost(createPostViewModel, User, webRootPath);
             return RedirectToAction("Create");
         }
         [HttpPost, Route("Post/Update")]
         public async Task<IActionResult> Update(EditViewModel editViewModel)
         {
             string webRootPath = _webHostEnvironment.WebRootPath;
-            ActionResult<EditViewModel> actionResult=await _postBusinessManager.UpdatePost(editViewModel, User,webRootPath);
+            ActionResult<EditViewModel> actionResult=await _postService.UpdatePost(editViewModel, User,webRootPath);
             if (actionResult.Result is null)
                 return RedirectToAction("Edit", new {id=editViewModel.Post.PostId});
 
@@ -59,7 +58,7 @@ namespace QuickBlog.Controllers
         [HttpPost]
         public async Task<IActionResult> Comment(PostViewModel postViewModel)
         {
-            ActionResult<Comment> actionResult = await _postBusinessManager.CreateComment(postViewModel, User);
+            ActionResult<Comment> actionResult = await _postService.CreateComment(postViewModel, User);
             if (actionResult.Result is null)
                 return RedirectToAction("Index",  new {id = postViewModel.Post.PostId });
 

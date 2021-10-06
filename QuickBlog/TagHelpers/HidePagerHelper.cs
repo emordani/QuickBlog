@@ -14,7 +14,7 @@ namespace QuickBlog.TagHelpers
 
         public override void Process(TagHelperContext context, TagHelperOutput output)
         {
-            if(List.Count()<=Count)
+            if (List.Count() >= Count)
                 output.SuppressOutput();
         }
     }
