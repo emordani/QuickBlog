@@ -10,27 +10,27 @@ namespace QuickBlog.Controllers
     [Authorize]
     public class AdminController : Controller
     {
-        private readonly IAdminService _adminBusinessManager;
+        private readonly IAdminService _adminService;
         private readonly IWebHostEnvironment _webHostEnvironment;
 
-        public AdminController(IAdminService adminBusinessManager, IWebHostEnvironment webHostEnvironment)
+        public AdminController(IAdminService adminService, IWebHostEnvironment webHostEnvironment)
         {
-            _adminBusinessManager = adminBusinessManager;
+            _adminService = adminService;
             _webHostEnvironment = webHostEnvironment;
         }
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string searchString, int? page)
         {
-            return View(await _adminBusinessManager.GetAdminDashboard(User));
+            return View(await _adminService.GetAdminDashboard(User,searchString,page));
         }
         public async Task<IActionResult> About()
         {
-            return View(await _adminBusinessManager.GetAboutViewModel(User));
+            return View(await _adminService.GetAboutViewModel(User));
         }
         [HttpPost]
         public async Task<IActionResult> UpdateAbout(AboutViewModel aboutViewModel)
         {
             string webRootPath = _webHostEnvironment.WebRootPath;
-            await _adminBusinessManager.UpdateAbout(aboutViewModel, User, webRootPath);
+            await _adminService.UpdateAbout(aboutViewModel, User, webRootPath);
             return RedirectToAction("About");
         }
     }

@@ -17,17 +17,11 @@
                 <div class="sb-nav-link-icon"><i class="fas fa-pen"></i></div>
                 Create post
             </a>
-            @if ((await UserManager.GetUserAsync(User)).FirstName=="ErikS")
-            {
-                <a class="nav-link" asp-controller="Admin" asp-action="Manage">
-                    <div class="sb-nav-link-icon"><i class="fas fa-pen"></i></div>
-                    Manage posts
-                </a>}
         </div>
 
     </div>
     <div class="sb-sidenav-footer">
         <div class="small">Logged in as: </div>
-        @User.Identity.Name
+        @((await UserManager.GetUserAsync(User)).FirstName) @((await UserManager.GetUserAsync(User)).LastName)
     </div>
 </nav>

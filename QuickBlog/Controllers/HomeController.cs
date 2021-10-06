@@ -6,23 +6,23 @@ namespace QuickBlog.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly CORE.Services.Interfaces.IPostService _postBusinessManager;
-        private readonly IHomeService _homeBusinessManager;
+        private readonly IPostService _postService;
+        private readonly IHomeService _homeService;
 
-        public HomeController(CORE.Services.Interfaces.IPostService postBusinessManager, IHomeService homeBusinessManager)
+        public HomeController(IPostService postService, IHomeService homeBusinessManager)
         {
-            _postBusinessManager = postBusinessManager;
-            _homeBusinessManager = homeBusinessManager;
+            _postService = postService;
+            _homeService = homeBusinessManager;
         }
         [Route("/")]
         public IActionResult Index(string searchString, int? page)
         {
-            return View(_postBusinessManager.GetIndexViewModel(searchString,page));
+            return View(_postService.GetIndexViewModel(searchString,page));
         }
 
         public IActionResult Author(string authorId, string searchString, int? page)
         {
-            ActionResult<AuthorViewModel> actionResult = _homeBusinessManager
+            ActionResult<AuthorViewModel> actionResult = _homeService
                 .GetAuthorViewModel(authorId, searchString, page);
             if (actionResult.Result is null)
                 return View(actionResult.Value);
