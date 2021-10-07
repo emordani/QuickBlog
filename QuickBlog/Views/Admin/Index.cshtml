@@ -2,6 +2,12 @@
 @model QuickBlog.CORE.ViewModels.AdminViewModels.IndexViewModel
 <div class="container-fluid">
     <h1>Dashboard</h1>
+    <form asp-controller="Admin" asp-action="Index" class="d-none d-md-inline-block form-inline ms-auto me-0 me-md-3 my-2 my-md-0 mb-1">
+        <div class="input-group  mb-3">
+            <input asp-for="SearchString" class="form-control" type="text" placeholder="Search for..." />
+            <button class="btn btn-primary"><i class="fas fa-search"></i></button>
+        </div>
+    </form>
     <div class="row">
         @foreach (var post in Model.Posts)
         {
