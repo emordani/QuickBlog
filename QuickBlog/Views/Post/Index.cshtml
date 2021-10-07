@@ -19,7 +19,7 @@
         <div class="row mt-5">
             <div class="col-lg-8 col-md-10 mx-auto">
                 <h3 class="mb-5">@Model.Post.Comments.Count() Comments</h3>
-                <ul class="comment-list  comment-top" list="@Model.Post.Comments" count="0">
+                <hide-comments class="comment-list  comment-top" comment-list="@Model.Post.Comments" comment-count="0">
                     @foreach (var comment in Model.Post.Comments.Where(comment => comment.Parent is null))
                     {
                         <li class="comment" style="margin-top: 30px;">
@@ -50,7 +50,7 @@
                                     </form>
                                 </div>
                             }
-                            <ul class="comment-list" list="@comment.Comments" count="0" style="margin-left: 30px; margin-top:0;">
+                            <hide-comments class="comment-list" comment-list="@comment.Comments" comment-count="0" style="margin-left: 30px; margin-top:0;">
                                 @foreach (var reply in comment.Comments)
                                 {
                                     <li class="comment">
@@ -61,11 +61,11 @@
                                         </div>
                                     </li>
                                 }
-                            </ul>
+                            </hide-comments>
                         </li>
                         <hr />
                     }
-                </ul>
+                </hide-comments>
 
                 @if (User.Identity.IsAuthenticated)
                 {
@@ -90,12 +90,9 @@
 </article>
 @section Scripts{
     <script>
-        $(document).ready(function() {
-
-            $('[data-toggle="collapse"]').click(function(){
-                $(".collapse").toggle( 'slow', function(){
-                    $(".log").text('Toggle Transition Complete');
-                });
+        $(document).ready(function () {
+            $('[data-toggle="collapse"]').click(function () {
+                $(".collapse").toggle( 'slow');
             });
         });
     </script>
