@@ -52,7 +52,6 @@ namespace QuickBlog.Controllers
             ActionResult<EditViewModel> actionResult=await _postService.UpdatePost(editViewModel, User,webRootPath);
             if (actionResult.Result is null)
                 return RedirectToAction("Edit", new {id=editViewModel.Post.PostId});
-
             return actionResult.Result;
         }
         [HttpPost]
